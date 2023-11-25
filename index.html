@@ -6,7 +6,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
-    <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/theme-chalk/index.css" rel="stylesheet">
+    <!-- <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/theme-chalk/index.css" rel="stylesheet"> -->
+    <link href="https://lib.baomitu.com/element-ui/2.13.2/theme-chalk/index.css" rel="stylesheet">
     <script src="//at.alicdn.com/t/font_1955249_mfujjbu9sug.js"></script>
     <title>周易数字卦查询</title>
     <style>
@@ -37,8 +38,16 @@
             text-decoration: blink;
             color: black;
             border: 1px solid #DCDFE6;
-            padding:0.5rem 1rem;
+            padding:0.5rem 0.5rem;
             display: block;
+            border-radius: 4px;
+        }
+        .ahrefClass{
+            text-decoration: blink;
+            color: red;
+            /* border: 1px solid #DCDFE6; */
+            /* padding:0.5rem 0.5rem; */
+            /* display: block; */
             border-radius: 4px;
         }
         .alinkClass{
@@ -52,9 +61,10 @@
             overflow: hidden;
         }
         .icon1 {
-            width: 1.5rem;
-            height: 1.5rem;
-            vertical-align: -0.40rem;
+            width: 1.3rem;
+            height: 1.3rem;
+            vertical-align: -0.3rem;
+            margin-left: -0.5rem;
             fill: currentColor;
             overflow: hidden;
         }
@@ -101,6 +111,15 @@
             -webkit-background-clip: text;
         }
     </style>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?25e0c9cf144cabb2be2ac594f9cef4b6";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
 </head>
 
 <body>
@@ -108,19 +127,19 @@
         <header>
             <h3 style="text-align: center;padding: 0 0 0.5rem 0;position: relative;">
                 <span style="position: absolute; left: 0;font-size: 13px;line-height: 1.6rem;">
-                    <span :class="changeType === 'query' ? 'activeLeft' : '' " @click="changeType = 'query'"><em>查卦 </em></span>
-                    <!-- <span :class="changeType === 'about' ? 'activeLeft' : '' " @click="changeType = 'about'"><em>关于 </em></span> -->
+                    <span :class="changeType === 'query' ? 'activeLeft' : '' " @click="changeType = 'query'">查卦</span>
+                    <!-- <span :class="changeType === 'about' ? 'activeLeft' : '' " @click="changeType = 'about'">关于</span> -->
                     &nbsp;/
-                    <span :class="changeType === 'author' ? 'activeLeft' : '' " @click="changeType = 'author'"><em>作者</em></span>
+                    <span :class="changeType === 'author' ? 'activeLeft' : '' " @click="changeType = 'author'">作者</span>
                 </span>
                 <!-- <span style="font-size: 1.1rem;font-family: 'FangSong'">周易数字卦查询</span> -->
                 <a class="alinkClass" :href="sixFourGua" target="_blank" >
                     <span style="font-size: 1.1rem;font-family: 'FangSong';">六十四卦</span>
                 </a>
                 <span style="position: absolute; right: 0;font-size: 13px;line-height: 1.6rem;">
-                    <span :class="changeType === 'time' ? 'active' : '' " @click="changeType = 'time'"><em>时间</em></span>
+                    <span :class="changeType === 'time' ? 'active' : '' " @click="changeType = 'time'">时间</span>
                     &nbsp;/
-                    <span :class="changeType === 'three' ? 'active' : '' " @click="changeType = 'three'"><em>三数</em></span>
+                    <span :class="changeType === 'three' ? 'active' : '' " @click="changeType = 'three'">三数</span>
                 </span>
             </h3>
             <el-input type="textarea" autosize placeholder="请输入问题" v-model="textarea">
@@ -153,7 +172,16 @@
                     </section>
                     <!-- 结果数 -->
                     <section style="text-align: center;margin-top: 0.5rem;color: red;" >
-                        <p><strong>{{queryGuaName}}</strong></p>
+                        <p><strong>{{queryGuaName}}</strong>
+                            <template v-if="queryzhigua != ''">
+                                <span >&nbsp;&nbsp;<strong>之</strong>&nbsp;&nbsp;</span>  
+                                <span ><strong>{{queryzhigua}}</strong></span> 
+                            </template>
+                            <template v-if="midgua != ''">
+                                <span >&nbsp;&nbsp;<strong>中互</strong>&nbsp;&nbsp;</span>  
+                                <span><strong>{{midgua}}</strong></span> 
+                            </template>
+                        </p>
                     </section>
                     <!-- 结果图 -->
                     <section style="text-align: center;margin-top: 0.5rem;padding: 0 15% 0 15%;">
@@ -162,12 +190,16 @@
                     <!-- 链接 -->
                     <section style="display: flex;justify-content: space-evenly;align-items: center; margin-top:0.5rem;" v-show="queryImgSrc !==''">
                         <a class="aClass" :href="queryGuaHreftoY" target="_blank">
-                            <span>易安居查卦</span> 
+                            <span>易安居</span> 
                             <svg class="icon1" aria-hidden="true"><use xlink:href="#icon-chakan"></use></svg>
                         </a>
                         <a class="aClass" :href="queryGuaHreftoG" target="_blank">
+                            <span>国易堂</span> 
                             <svg class="icon1" aria-hidden="true"><use xlink:href="#icon-chakan"></use></svg>
-                            <span>国易堂解卦</span> 
+                        </a>
+                        <a class="aClass" :href="queryGuaHreftoGD" target="_blank">
+                            <span>高岛易断</span> 
+                            <svg class="icon1" aria-hidden="true"><use xlink:href="#icon-chakan"></use></svg>
                         </a>
                     </section>
                 </div>
@@ -181,7 +213,17 @@
                     </div>
                 </div> -->
                 <div v-if="changeType === 'author'"  style="margin-top: 15%;">
-                    <p class="updateInfo"><em>&nbsp;&nbsp;&nbsp;&nbsp;本页面会不断更新，如页面不正常显示可换浏览器打开，欢迎大家提供修改意见，微信和微博私信均可。</em></p>
+                    <!-- 二维码 -->
+                    <div style="text-align: center;" >
+                        <!-- <span class="rainbow-text">如果觉得网页好用，希望能扫码一次让我知晓</span>  -->
+                        <p style="font-size: 12px;margin-bottom: 0.5rem;">
+                            <span :class="donateOrshareImg === 'img/donate.png' ? 'rainbow-text' : '' " @click="toDonate">赞赏码</span> 
+                            <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span> 
+                            <span :class="donateOrshareImg === 'img/share.jpg' ? 'rainbow-text' : '' "  @click="toShare">分享码</span> 
+                        </p>
+                        <img :src="donateOrshareImg" alt="" style="border: 1px solid #eee;border-radius:5px">
+                    </div>
+                    <!-- <p class="updateInfo"><em>&nbsp;&nbsp;&nbsp;&nbsp;本页面会不断更新，如页面不正常显示可换浏览器打开，欢迎大家提供修改意见，微信和微博私信均可。</em></p>
                     <p class="updateInfo"><em>&nbsp;&nbsp;&nbsp;&nbsp;2020/7/20日更正数字卦，一数取余为下卦，二数取余为上卦，三数取余为变爻。出处——《易经入门》</em></p>
                     <p class="updateInfo"><em>&nbsp;&nbsp;&nbsp;&nbsp;2021/1/9日更新国易堂跳转。</em></p>
                     <p class="updateInfo"><em>&nbsp;&nbsp;&nbsp;&nbsp;2021/2/3日查卦功能，输入卦名和爻动即可生成对应的卦名页面的跳转链接。</em></p>
@@ -193,7 +235,7 @@
                         <span class="rainbow-text">
                             <a style="text-decoration-line: underline;" href="https://islandsaying.gitee.io/change/indexDev.html">新版界面试运行</a> 
                         </span>
-                    </em></p>
+                    </em></p> -->
                     <el-row style="margin-top: 0.5rem;text-align: center;margin-top: 1.5rem;">
                         <el-col> 
                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-weixin"></use></svg>
@@ -216,7 +258,7 @@
                         <el-col :span="10"><el-input v-model.number="time1"  placeholder="时"></el-input></el-col>
                         <el-col :span="10"><el-input v-model="time2" type="number" placeholder="分"></el-input></el-col>
                     </el-row>
-                    <p style="color: rgba(146,146,146,0.7);font-size: 13px;text-align: center;margin-top: 0.5rem;">注：输入时间数，例如23：56</p>
+                    <p style="color: rgba(146,146,146,0.7);font-size: 13px;text-align: center;margin-top: 0.5rem;">注：输入时间数，例如13：27</p>
                 </div>
                 <div v-if="changeType === 'three'">
                     <el-row :gutter="20" style="display: flex;justify-content: space-around;">
@@ -229,7 +271,7 @@
                         <el-col :span="7"><el-input v-model.number="number2"  placeholder="数二"></el-input></el-col>
                         <el-col :span="7"><el-input v-model.number="number3"  placeholder="数三"></el-input></el-col>
                     </el-row>
-                    <p style="color: rgba(146,146,146,0.7);font-size: 13px;text-align: center;margin-top: 0.5rem;">注：数字为非零开头三位数，例如666&nbsp;666&nbsp;666</p>
+                    <p style="color: rgba(146,146,146,0.7);font-size: 13px;text-align: center;margin-top: 0.5rem;">注：数字为非零开头三位数，例如129&nbsp;230&nbsp;587</p>
                 </div>
             </section>
             <div v-show="changeType === 'time' || changeType === 'three'">
@@ -242,7 +284,12 @@
                 </section>
                 <!-- 结果数 -->
                 <section style="text-align: center;margin-top: 0.5rem;color: red;" >
-                    <p><strong>{{gua}}</strong></p>
+                    <a class="ahrefClass" :href="guaHreftoSixTeen" target="_blank">
+                        <p><strong>{{gua}}</strong>
+                            <span v-if="zhigua != ''">&nbsp;&nbsp;<strong>之</strong>&nbsp;&nbsp;</span>    
+                            <strong>{{zhigua}}</strong>
+                        </p>                        
+                    </a>
                 </section>
                 <!-- 结果图 -->
                 <section style="text-align: center;margin-top: 0.5rem;padding: 0 15% 0 15%;">
@@ -251,12 +298,16 @@
                 <!-- 链接 -->
                 <section style="display: flex;justify-content: space-evenly;align-items: center; margin-top:0.5rem;" v-show="imgSrc !==''">
                     <a class="aClass" :href="guaHreftoY" target="_blank">
-                        <span>易安居解卦</span> 
+                        <span>易安居</span> 
                         <svg class="icon1" aria-hidden="true"><use xlink:href="#icon-chakan"></use></svg>
                     </a>
                     <a class="aClass" :href="guaHreftoG" target="_blank">
+                        <span>国易堂</span> 
                         <svg class="icon1" aria-hidden="true"><use xlink:href="#icon-chakan"></use></svg>
-                        <span>国易堂解卦</span> 
+                    </a>
+                    <a class="aClass" :href="guaHreftoGD" target="_blank">
+                        <span>高岛易断</span> 
+                        <svg class="icon1" aria-hidden="true"><use xlink:href="#icon-chakan"></use></svg>
                     </a>
                 </section>
             </div>
@@ -265,8 +316,10 @@
             <p class="footInfo">*注：本网页仅供个人学习或娱乐，不作其他商业用途。</p>
         </footer>
     </div>
-    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js"></script>
+    <!-- <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script> -->
+    <script src="https://lib.baomitu.com/vue/2.6.11/vue.min.js"></script>
+    <!-- <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js"></script> -->
+    <script src="https://lib.baomitu.com/element-ui/2.13.2/index.js"></script>
     <script>
         new Vue({
             el: "#app",
@@ -278,8 +331,10 @@
                 queryChange:'', //输入爻
                 queryGuaName:'', //(查)
                 queryImgSrc: '',// (查)
+                donateOrshareImg: 'img/donate.png',
                 queryGuaHreftoY: null, //去易安居(查)
                 queryGuaHreftoG: null, //去国易堂(查)
+                queryGuaHreftoGD: null, //去高岛易断(查)
                 time1: '',
                 time2: '',
                 number1: '',
@@ -287,140 +342,234 @@
                 number3: '',
                 imgSrc: '',
                 gua: '',
+                queryzhigua:'',
+                midgua: '',
+                zhigua:'', //之卦
                 guaHreftoY: null, //去易安居
                 guaHreftoG: null, //去国易堂
+                guaHreftoGD: null, //去高岛易断
+                guaHreftoSixTeen: null, //去十六进制
                 loading: false,
-                matchSelfobjG: {
-                    '乾卦': 168,
-                    '坤卦': 887,
-                    '屯卦': 929,
-                    '蒙卦': 964,
-                    '需卦': 972,
-                    '讼卦': 1019,
-                    '师卦': 1027,
-                    '比卦': 1067,
-                    '小畜卦': 1075,
-                    '履卦': 1119,
-                    '泰卦': 1167,
-                    '否卦': 2456,
-                    '同人卦': 2488,
-                    '大有卦': 2505,
-                    '谦卦': 2548,
-                    '豫卦': 2565,
-                    '随卦': 2649,
-                    '蛊卦': 2696,
-                    '临卦': 2752,
-                    '观卦': 2840,
-                    '噬嗑卦': 2909,
-                    '贲卦': 3189,
-                    '剥卦': 3544,
-                    '复卦': 3906,
-                    '无妄卦': 5187,
-                    '大畜卦': 5313,
-                    '颐卦': 5322,
-                    '大过卦': 5330,
-                    '坎卦': 5338,
-                    '离卦': 6057,
-                    '咸卦': 5346,
-                    '恒卦': 5366,
-                    '遁卦': 5411,
-                    '大壮卦': 5419,
-                    '晋卦': 5432,
-                    '明夷卦': 5440,
-                    '家人卦': 5509,
-                    '睽卦': 5517,
-                    '蹇卦': 5525,
-                    '解卦': 5533,
-                    '损卦': 5561,
-                    '益卦': 5581,
-                    '夬卦': 5592,
-                    '姤卦': 5615,
-                    '萃卦': 5623,
-                    '升卦': 5635,
-                    '困卦': 5648,
-                    '井卦': 5656,
-                    '革卦': 5668,
-                    '鼎卦': 5712,
-                    '震卦': 5720,
-                    '艮卦': 5728,
-                    '渐卦': 5736,
-                    '归妹卦': 5753,
-                    '丰卦': 5801,
-                    '旅卦': 5815,
-                    '巽卦': 5941,
-                    '兑卦': 5960,
-                    '涣卦': 5979,
-                    '节卦': 6011,
-                    '中孚卦': 6019,
-                    '小过卦': 6029,
-                    '既济卦': 6037,
-                    '未济卦': 6045,
+                matchObjMid: {
+                    '乾卦':'乾卦', 
+                    '夬卦':'乾卦', 
+                    '大有卦':'夬卦', 
+                    '大壮卦':'夬卦', 
+                    '小畜卦':'睽卦', 
+                    '需卦':'睽卦', 
+                    '大畜卦':'归妹卦', 
+                    '泰卦':'归妹卦', 
+                    '履卦':'家人卦', 
+                    '兑卦':'兑卦', 
+                    '睽卦':'既济卦', 
+                    '归妹卦':'既济卦', 
+                    '中孚卦':'颐卦', 
+                    '节卦':'颐卦', 
+                    '损卦':'复卦', 
+                    '临卦':'复卦', 
+                    '同人卦':'姤卦', 
+                    '革卦':'姤卦', 
+                    '离卦':'离卦', 
+                    '丰卦':'大过卦', 
+                    '家人卦':'未济卦', 
+                    '既济卦':'未济卦', 
+                    '贲卦':'解卦', 
+                    '明夷卦':'解卦', 
+                    '无妄卦':'渐卦', 
+                    '随卦':'渐卦', 
+                    '噬嗑卦':'蹇卦', 
+                    '震卦':'蹇卦', 
+                    '益卦':'剥卦', 
+                    '屯卦':'剥卦', 
+                    '颐卦':'坤卦', 
+                    '复卦':'坤卦', 
+                    '姤卦':'乾卦', 
+                    '大过卦':'乾卦', 
+                    '鼎卦':'夬卦', 
+                    '恒卦':'夬卦', 
+                    '巽卦':'睽卦', 
+                    '井卦':'睽卦', 
+                    '蛊卦':'归妹卦', 
+                    '升卦':'归妹卦', 
+                    '讼卦':'家人卦', 
+                    '困卦':'家人卦', 
+                    '未济卦':'既济卦', 
+                    '解卦':'既济卦', 
+                    '涣卦':'颐卦', 
+                    '坎卦':'颐卦', 
+                    '蒙卦':'复卦', 
+                    '师卦':'复卦', 
+                    '遁卦':'姤卦', 
+                    '咸卦':'姤卦', 
+                    '旅卦':'大过卦', 
+                    '小过卦':'大过卦', 
+                    '渐卦':'未济卦', 
+                    '蹇卦':'未济卦', 
+                    '艮卦':'解卦', 
+                    '谦卦':'解卦', 
+                    '否卦':'渐卦', 
+                    '萃卦':'渐卦', 
+                    '晋卦':'蹇卦', 
+                    '豫卦':'蹇卦', 
+                    '观卦':'剥卦', 
+                    '比卦':'剥卦', 
+                    '剥卦':'坤卦', 
+                    '坤卦':'坤卦'
                 },
+                matchobjGName:['乾','兑','离','震','巽','坎','艮','坤'],
+                matchobjChange:[
+                    ['乾','乾',0],
+                    ['乾','兑',3],
+                    ['乾','离',2],
+                    ['乾','巽',1],
+                    ['兑','兑',0],
+                    ['兑','震',2],
+                    ['兑','坎',1],
+                    ['离','离',0],
+                    ['离','震',3],
+                    ['离','艮',1],
+                    ['震','震',0],
+                    ['震','坤',1],
+                    ['巽','巽',0],
+                    ['巽','坎',3],
+                    ['巽','艮',2],
+                    ['坎','坎',0],
+                    ['坎','坤',2],
+                    ['艮','艮',0],
+                    ['艮','坤',3],
+                    ['坤','坤',0]
+                ],
                 matchobjG: {
-                    '乾卦': [169,170,496,499,883,884],
-                    '坤卦': [888,889,890,891,892,893],
-                    '屯卦': [930,958,959,960,961,962],
-                    '蒙卦': [965,964,967,968,969,970],//二爻不见了用本卦取代
-                    '需卦': [973,974,975,976,977,978],
-                    '讼卦': [1020,1021,1022,1023,1024,1025],
-                    '师卦': [1028,1029,1030,1031,1032,1033],
-                    '比卦': [1068,1069,1070,1071,1072,1073],
-                    '小畜卦': [1076,1077,1078,1079,1080,1081],
-                    '履卦': [1120,1121,1122,1123,1124,1125],
-                    '泰卦': [1168,1169,1170,1171,1172,1173],
-                    '否卦': [2457,2458,2459,2460,2461,2462],
-                    '同人卦': [2489,2490,2491,2492,2493,2494],
-                    '大有卦': [2506,2507,2508,2509,2510,2511],
-                    '谦卦': [2549,2550,2551,2552,2553,2554],
-                    '豫卦': [2566,2567,2568,2569,2570,2571],
-                    '随卦': [2650,2651,2652,2653,2654,2655],
-                    '蛊卦': [2697,2698,2699,2700,2701,2702],
-                    '临卦': [2753,2754,2755,2756,2757,2758],
-                    '观卦': [2841,2842,2843,2844,2845,2846],
-                    '噬嗑卦': [2910,2911,2912,2913,2914,2915],
-                    '贲卦': [3190,3191,3192,3193,3194,3195],
-                    '剥卦': [3545,3546,3547,3548,3549,3550],
-                    '复卦': [3907,3908,3909,3910,3911,3912],
-                    '无妄卦': [5188,5189,5190,5191,5192,5193],
-                    '大畜卦': [5314,5315,5316,5317,5319,5320],
-                    '颐卦': [5323,5324,5325,5326,5327,5328],
-                    '大过卦': [5331,5332,5333,5334,5335,5336],
-                    '坎卦': [5339,5340,5341,5342,5343,5344],
-                    '离卦': [6058,6059,6060,6061,6062,6063],
-                    '咸卦': [5347,5348,5349,5350,5351,5352],
-                    '恒卦': [5367,5368,5369,5370,5371,5372],
-                    '遁卦': [5412,5413,5414,5415,5416,5417],
-                    '大壮卦': [5420,5421,5422,5423,5424,5425],
-                    '晋卦': [5433,5434,5435,5436,5437,5438],
-                    '明夷卦': [5441,5442,5443,5444,5445,5446],
-                    '家人卦': [5510,5511,5512,5513,5514,5515],
-                    '睽卦': [5518,5519,5520,5521,5522,5523],
-                    '蹇卦': [5526,5527,5528,5529,5530,5531],
-                    '解卦': [5534,5535,5536,5537,5538,5539],
-                    '损卦': [5562,5563,5564,5565,5566,5567],
-                    '益卦': [5582,5583,5584,5585,5586,5587],
-                    '夬卦': [5593,5594,5595,5596,5597,5598],
-                    '姤卦': [5616,5617,5618,5619,5620,5621],
-                    '萃卦': [5624,5625,5626,5627,5628,5629],
-                    '升卦': [5636,5637,5638,5639,5640,5641],
-                    '困卦': [5649,5650,5651,5652,5653,5654],
-                    '井卦': [5657,5658,5659,5660,5661,5662],
-                    '革卦': [5669,5676,5677,5678,5679,5680],
-                    '鼎卦': [5713,5714,5715,5716,5717,5718],
-                    '震卦': [5721,5722,5723,5724,5725,5726],
-                    '艮卦': [5729,5730,5731,5732,5733,5734],
-                    '渐卦': [5737,5738,5739,5740,5741,5742],
-                    '归妹卦': [5754,5768,5769,5770,5771,5772],
-                    '丰卦': [5802,5803,5804,5805,5806,5807],
-                    '旅卦': [9900,5816,5817,5818,5819,5820],
-                    '巽卦': [5942,5943,5944,5945,5946,5947],
-                    '兑卦': [5961,5962,5963,5964,5965,5966],
-                    '涣卦': [5980,5981,5987,5988,5989,5990],
-                    '节卦': [6012,6013,6014,6015,6016,6017],
-                    '中孚卦': [6020,6021,6022,6023,6024,6025],
-                    '小过卦': [6030,6031,6032,6033,6034,6035],
-                    '既济卦': [6038,6039,6040,6041,6042,6043],
-                    '未济卦': [6046,6047,6048,6049,6050,6051],
+                    '乾卦': [168,169,170,496,499,883,884],
+                    '坤卦': [887,888,889,890,891,892,893],
+                    '屯卦': [929,930,958,959,960,961,962],
+                    '蒙卦': [964,965,966,967,968,969,970],//二爻不见了用本卦取代
+                    '需卦': [972,973,974,975,976,977,978],
+                    '讼卦': [1019,1020,1021,1022,1023,1024,1025],
+                    '师卦': [1027,1028,1029,1030,1031,1032,1033],
+                    '比卦': [1067,1068,1069,1070,1071,1072,1073],
+                    '小畜卦': [1075,1076,1077,1078,1079,1080,1081],
+                    '履卦': [1119,1120,1121,1122,1123,1124,1125],
+                    '泰卦': [1167,1168,1169,1170,1171,1172,1173],
+                    '否卦': [2456,2457,2458,2459,2460,2461,2462],
+                    '同人卦': [2488,2489,2490,2491,2492,2493,2494],
+                    '大有卦': [2505,2506,2507,2508,2509,2510,2511],
+                    '谦卦': [2548,2549,2550,2551,2552,2553,2554],
+                    '豫卦': [2565,2566,2567,2568,2569,2570,2571],
+                    '随卦': [2649,2650,2651,2652,2653,2654,2655],
+                    '蛊卦': [2696,2697,2698,2699,2700,2701,2702],
+                    '临卦': [2752,2753,2754,2755,2756,2757,2758],
+                    '观卦': [2840,2841,2842,2843,2844,2845,2846],
+                    '噬嗑卦': [2909,2910,2911,2912,2913,2914,2915],
+                    '贲卦': [3189,3190,3191,3192,3193,3194,3195],
+                    '剥卦': [3544,3545,3546,3547,3548,3549,3550],
+                    '复卦': [3906,3907,3908,3909,3910,3911,3912],
+                    '无妄卦': [5187,5188,5189,5190,5191,5192,5193],
+                    '大畜卦': [5313,5314,5315,5316,5317,5319,5320],
+                    '颐卦': [5322,5323,5324,5325,5326,5327,5328],
+                    '大过卦': [5330,5331,5332,5333,5334,5335,5336],
+                    '坎卦': [5338,5339,5340,5341,5342,5343,5344],
+                    '离卦': [6057,6058,6059,6060,6061,6062,6063],
+                    '咸卦': [5346,5347,5348,5349,5350,5351,5352],
+                    '恒卦': [5366,5367,5368,5369,5370,5371,5372],
+                    '遁卦': [5411,5412,5413,5414,5415,5416,5417],
+                    '大壮卦': [5419,5420,5421,5422,5423,5424,5425],
+                    '晋卦': [5432,5433,5434,5435,5436,5437,5438],
+                    '明夷卦': [5440,5441,5442,5443,5444,5445,5446],
+                    '家人卦': [5509,5510,5511,5512,5513,5514,5515],
+                    '睽卦': [5517,5518,5519,5520,5521,5522,5523],
+                    '蹇卦': [5525,5526,5527,5528,5529,5530,5531],
+                    '解卦': [5533,5534,5535,5536,5537,5538,5539],
+                    '损卦': [5561,5562,5563,5564,5565,5566,5567],
+                    '益卦': [5581,5582,5583,5584,5585,5586,5587],
+                    '夬卦': [5592,5593,5594,5595,5596,5597,5598],
+                    '姤卦': [5615,5616,5617,5618,5619,5620,5621],
+                    '萃卦': [5623,5624,5625,5626,5627,5628,5629],
+                    '升卦': [5635,5636,5637,5638,5639,5640,5641],
+                    '困卦': [5648,5649,5650,5651,5652,5653,5654],
+                    '井卦': [5656,5657,5658,5659,5660,5661,5662],
+                    '革卦': [5668,5669,5676,5677,5678,5679,5680],
+                    '鼎卦': [5712,5713,5714,5715,5716,5717,5718],
+                    '震卦': [5720,5721,5722,5723,5724,5725,5726],
+                    '艮卦': [5728,5729,5730,5731,5732,5733,5734],
+                    '渐卦': [5736,5737,5738,5739,5740,5741,5742],
+                    '归妹卦': [5753,5754,5768,5769,5770,5771,5772],
+                    '丰卦': [5801,5802,5803,5804,5805,5806,5807],
+                    '旅卦': [5815,9900,5816,5817,5818,5819,5820],
+                    '巽卦': [5941,5942,5943,5944,5945,5946,5947],
+                    '兑卦': [5960,5961,5962,5963,5964,5965,5966],
+                    '涣卦': [5979,5980,5981,5987,5988,5989,5990],
+                    '节卦': [6011,6012,6013,6014,6015,6016,6017],
+                    '中孚卦': [6019,6020,6021,6022,6023,6024,6025],
+                    '小过卦': [6029,6030,6031,6032,6033,6034,6035],
+                    '既济卦': [6037,6038,6039,6040,6041,6042,6043],
+                    '未济卦': [6045,6046,6047,6048,6049,6050,6051],
+                },
+                matchobjGD:{
+                    '乾卦': [453,454,455,456,457,458,459],
+                    '坤卦': [462,463,464,465,466,467,468],
+                    '屯卦': [471,472,473,474,475,476,477],
+                    '蒙卦': [478,479,480,481,482,483,484],
+                    '需卦': [485,486,487,488,489,490,491],
+                    '讼卦': [492,493,494,495,496,497,498],
+                    '师卦': [499,500,501,502,503,504,505],
+                    '比卦': [506,507,508,509,510,511,512],
+                    '小畜卦': [513,514,515,516,517,518,519],
+                    '履卦': [520,521,522,523,524,525,526],
+                    '泰卦': [527,528,529,530,531,532,533],
+                    '否卦': [534,535,536,537,538,539,540],
+                    '同人卦': [541,542,543,544,545,546,547],
+                    '大有卦': [548,549,550,551,552,553,554],
+                    '谦卦': [555,556,557,558,559,560,561],
+                    '豫卦': [562,563,564,565,566,567,568],
+                    '随卦': [569,570,571,572,573,574,575],
+                    '蛊卦': [576,577,578,579,580,581,582],
+                    '临卦': [583,584,585,586,587,588,589],
+                    '观卦': [590,591,592,593,594,595,596],
+                    '噬嗑卦': [597,598,599,600,601,602,603],
+                    '贲卦': [604,605,606,607,608,609,610],
+                    '剥卦': [611,612,613,614,615,616,617],
+                    '复卦': [618,619,620,621,622,623,624],
+                    '无妄卦': [625,626,627,628,629,630,631],
+                    '大畜卦': [632,633,634,635,636,637,638],
+                    '颐卦': [639,640,641,642,643,644,645],
+                    '大过卦': [646,647,648,649,650,651,652],
+                    '坎卦': [653,654,655,656,657,658,659],
+                    '离卦': [660,661,662,663,664,665,666],
+                    '咸卦': [667,668,669,670,671,672,673],
+                    '恒卦': [674,675,676,677,678,679,680],
+                    '遁卦': [681,682,683,684,685,686,687],
+                    '大壮卦': [688,689,690,691,692,693,694],
+                    '晋卦': [695,696,697,698,699,700,701],
+                    '明夷卦': [702,703,704,705,706,707,708],
+                    '家人卦': [709,710,711,712,713,714,715],
+                    '睽卦': [716,717,718,719,720,721,722],
+                    '蹇卦': [723,724,725,726,727,728,729],
+                    '解卦': [730,731,732,733,734,735,736],
+                    '损卦': [737,738,739,740,741,742,743],
+                    '益卦': [744,745,746,747,748,749,750],
+                    '夬卦': [751,752,753,754,755,756,757],
+                    '姤卦': [758,759,760,761,762,763,764],
+                    '萃卦': [765,766,767,768,769,770,771],
+                    '升卦': [772,773,774,775,776,777,778],
+                    '困卦': [779,780,781,782,783,784,785],
+                    '井卦': [786,787,788,789,790,791,792],
+                    '革卦': [793,794,795,796,797,798,799],
+                    '鼎卦': [800,801,802,803,804,805,806],
+                    '震卦': [807,808,809,810,811,812,813],
+                    '艮卦': [814,815,816,817,818,819,820],
+                    '渐卦': [821,822,823,824,825,826,827],
+                    '归妹卦': [828,829,830,831,832,833,834],
+                    '丰卦': [835,836,837,838,839,840,841],
+                    '旅卦': [842,843,844,845,846,847,848],
+                    '巽卦': [849,850,851,852,853,854,855],
+                    '兑卦': [856,857,858,859,860,861,862],
+                    '涣卦': [863,864,865,866,867,868,869],
+                    '节卦': [870,871,872,873,874,875,876],
+                    '中孚卦': [877,878,879,880,881,882,883],
+                    '小过卦': [884,885,886,887,888,889,890],
+                    '既济卦': [891,892,893,894,895,896,897],
+                    '未济卦': [898,899,900,901,902,903,904],
                 }
             },
             methods: {
@@ -430,8 +579,9 @@
                     let queryChange = this.queryChange
                     const arr1 = [11, 21, 31, 41, 51, 61, 71, 81, 12, 22, 32, 42, 52, 62, 72, 82, 13, 23, 33, 43, 53, 63, 73, 83, 14, 24, 34, 44, 54, 64, 74, 84, 15, 25, 35, 45, 55, 65, 75, 85, 16, 26, 36, 46, 56, 66, 76, 86, 17, 27, 37, 47, 57, 67, 77, 87, 18, 28, 38, 48, 58, 68, 78, 88]
                     const arr2 = ['乾卦', '夬卦', '大有卦', '大壮卦', '小畜卦', '需卦', '大畜卦', '泰卦', '履卦', '兑卦', '睽卦', '归妹卦', '中孚卦', '节卦', '损卦', '临卦', '同人卦', '革卦', '离卦', '丰卦', '家人卦', '既济卦', '贲卦', '明夷卦', '无妄卦', '随卦', '噬嗑卦', '震卦', '益卦', '屯卦', '颐卦', '复卦', '姤卦', '大过卦', '鼎卦', '恒卦', '巽卦', '井卦', '蛊卦', '升卦', '讼卦', '困卦', '未济卦', '解卦', '涣卦', '坎卦', '蒙卦', '师卦', '遁卦', '咸卦', '旅卦', '小过卦', '渐卦', '蹇卦', '艮卦', '谦卦', '否卦', '萃卦', '晋卦', '豫卦', '观卦', '比卦', '剥卦', '坤卦']
-                    const arr3 = ['一', '二', '三', '四', '五', '六']
+                    const arr3 = ['无','一', '二', '三', '四', '五', '六']
                     const arr4 = [4103, 4183, 4141, 4173, 4112, 4108, 4159, 4126, 4113, 4200, 4177, 4195, 4255, 4244, 4181, 4146, 4140, 4189, 4169, 4196, 4176, 4257, 4149, 4175, 4153, 4144, 4148, 4192, 4182, 4106, 4164, 4152, 4184, 4167, 4190, 4171, 4198, 4188, 4145, 4186, 4109, 4187, 4263, 4180, 4212, 4168, 4107, 4110, 4172, 4170, 4197, 4256, 4194, 4179, 4193, 4142, 4127, 4185, 4174, 4143, 4147, 4111, 4150, 4105]
+                    const arr5 = ['乾为天', '泽天夬', '火天大有', '雷天大壮', '风天小畜', '水天需', '风天大畜', '地天泰', '天泽履', '兑为泽', '火泽睽', '雷泽归妹', '风泽中孚', '水泽节', '山泽损', '地泽临', '天火同人', '泽火革', '离为火', '雷火丰', '风火家人', '水火既济', '山火贲', '地火明夷', '天雷无妄', '泽雷随', '火雷噬嗑', '震为雷', '风雷益', '水雷屯', '山雷颐', '地雷复', '天风姤', '泽风大过', '火风鼎', '雷风恒', '巽为风', '水风井', '山风蛊', '地风升', '天水讼', '泽水困', '火水未济', '雷水解', '风水涣', '坎为水', '山水蒙', '地水师', '天山遁', '泽山咸', '火山旅', '雷山小过', '风山渐', '水山蹇', '艮为山', '地山谦', '天地否', '泽地萃', '火地晋', '雷地豫', '风地观', '水地比', '山地剥', '坤为地']                    
                     if(arr2.includes(liter)){
                         if(arr3.includes(queryChange) || queryChange === ''){ //判断爻动输入
                             setTimeout(() => {
@@ -439,18 +589,23 @@
                                 this.queryGuaName = queryChange === ''? liter + '无爻动' : liter + queryChange + '爻动'
                                 let index = arr2.indexOf(liter)
                                 let imgIndex = arr1[index]
+                                var c = queryChange == ''?0:arr3.indexOf(queryChange)
+                                this.queryzhigua = this.dealZhigua(String(imgIndex)[0],String(imgIndex)[1],c,arr2,arr1,arr3.slice(1),liter)
                                 this.queryGuaHreftoY = `https://m.zhouyi.cc/zhouyi/yijing64/${arr4[index]}.html`
                                 this.queryImgSrc = 'img/' + imgIndex + '.png'
                                 //处理第二个链接
                                 var numberG1 = Object.keys(this.matchobjG).indexOf(liter) + 1
                                 numberG1 = numberG1 < 10 ? '0'+ numberG1 : numberG1
-                                var numberG2 =  arr3.includes(queryChange)? this.matchobjG[liter][arr3.indexOf(queryChange)] : this.matchSelfobjG[liter]
+                                var numberG2 =  queryChange === ''? this.matchobjG[liter][0]: this.matchobjG[liter][arr3.indexOf(queryChange)]
                                 this.queryGuaHreftoG = `https://www.guoyi360.com/64gua${String(numberG1)}/xj/${String(numberG2)}.html`
+                                //处理第三个链接
+                                var numberG3 =  queryChange === ''? this.matchobjGD[liter][0]: this.matchobjGD[liter][arr3.indexOf(queryChange)] 
+                                this.queryGuaHreftoGD = `https://www.xshiqi.com/category_zyzs/dzzs/gddy/${String(numberG3)}.html`
                             },2000)
                         }else{
                             this.loading = false
                             this.$message({
-                                message: '爻动要么不填要么填一二三四五六~',
+                                message: '爻动要么填无要么填一二三四五六~',
                                 type: 'warning',
                                 center: true
                             });
@@ -482,7 +637,7 @@
                             let upNumber = this.dealNumber(this.time1, 8)
                             let downNumber = this.dealNumber(time2, 8)
                             let changeNumber = this.dealNumber(this.time1 + time2, 6)
-                            // console.log(upNumber, downNumber, changeNumber);
+                            console.log(upNumber, downNumber, changeNumber);
                             this.outGua(upNumber, downNumber, changeNumber)
                         } else {
                             this.$message({
@@ -526,18 +681,85 @@
                         var arr2 = ['乾卦', '夬卦', '大有卦', '大壮卦', '小畜卦', '需卦', '大畜卦', '泰卦', '履卦', '兑卦', '睽卦', '归妹卦', '中孚卦', '节卦', '损卦', '临卦', '同人卦', '革卦', '离卦', '丰卦', '家人卦', '既济卦', '贲卦', '明夷卦', '无妄卦', '随卦', '噬嗑卦', '震卦', '益卦', '屯卦', '颐卦', '复卦', '姤卦', '大过卦', '鼎卦', '恒卦', '巽卦', '井卦', '蛊卦', '升卦', '讼卦', '困卦', '未济卦', '解卦', '涣卦', '坎卦', '蒙卦', '师卦', '遁卦', '咸卦', '旅卦', '小过卦', '渐卦', '蹇卦', '艮卦', '谦卦', '否卦', '萃卦', '晋卦', '豫卦', '观卦', '比卦', '剥卦', '坤卦']
                         var arr3 = ['一', '二', '三', '四', '五', '六']
                         var arr4 = [4103, 4183, 4141, 4173, 4112, 4108, 4159, 4126, 4113, 4200, 4177, 4195, 4255, 4244, 4181, 4146, 4140, 4189, 4169, 4196, 4176, 4257, 4149, 4175, 4153, 4144, 4148, 4192, 4182, 4106, 4164, 4152, 4184, 4167, 4190, 4171, 4198, 4188, 4145, 4186, 4109, 4187, 4263, 4180, 4212, 4168, 4107, 4110, 4172, 4170, 4197, 4256, 4194, 4179, 4193, 4142, 4127, 4185, 4174, 4143, 4147, 4111, 4150, 4105]
+                        var arr5 = ['乾为天', '泽天夬', '火天大有', '雷天大壮', '风天小畜', '水天需', '风天大畜', '地天泰', '天泽履', '兑为泽', '火泽睽', '雷泽归妹', '风泽中孚', '水泽节', '山泽损', '地泽临', '天火同人', '泽火革', '离为火', '雷火丰', '风火家人', '水火既济', '山火贲', '地火明夷', '天雷无妄', '泽雷随', '火雷噬嗑', '震为雷', '风雷益', '水雷屯', '山雷颐', '地雷复', '天风姤', '泽风大过', '火风鼎', '雷风恒', '巽为风', '水风井', '山风蛊', '地风升', '天水讼', '泽水困', '火水未济', '雷水解', '风水涣', '坎为水', '山水蒙', '地水师', '天山遁', '泽山咸', '火山旅', '雷山小过', '风山渐', '水山蹇', '艮为山', '地山谦', '天地否', '泽地萃', '火地晋', '雷地豫', '风地观', '水地比', '山地剥', '坤为地']                    
                         var guaName = arr2[arr1.indexOf(Number(String(a) + b))]
                         this.gua = arr2[arr1.indexOf(Number(String(a) + b))] + arr3[c - 1] + '爻动'
+                        this.zhigua = this.dealZhigua(a,b,c,arr2,arr1,arr3)
                         this.guaHreftoY = `https://m.zhouyi.cc/zhouyi/yijing64/${arr4[arr1.indexOf(Number(String(a) + b))]}.html`
-                        console.log(a,b);
+                        // console.log(a,b);
                         this.imgSrc = 'img/' + a + b + '.png'
                         /*处理第二个链接*/ 
                         var numberG1 = Object.keys(this.matchobjG).indexOf(guaName) + 1
                         numberG1 = numberG1 < 10 ? '0'+ numberG1 : numberG1
-                        var numberG2 = this.matchobjG[guaName][c - 1]
+                        var numberG2 = this.matchobjG[guaName][c]
                         this.guaHreftoG = `https://www.guoyi360.com/64gua${String(numberG1)}/xj/${String(numberG2)}.html`
-                    }, 1000)
-                }
+                        /*处理第三个链接*/
+                        var numberG3 = this.matchobjGD[guaName][c]
+                        this.guaHreftoGD = `https://www.xshiqi.com/category_zyzs/dzzs/gddy/${String(numberG3)}.html`
+                        this.guaHreftoSixTeen = this.goToSixTeen(a,b,c,arr5,arr1,arr3)
+                    }, 900)
+                },
+                dealChangeGua: function(haha,number){ //处理变卦
+                    var arr = this.matchobjChange.filter(function(item){
+                        return item.includes(haha) && item.includes(number)
+                    })[0]
+                    console.log(arr.find(function(item){return (item != haha && item != number)}));
+                    return arr.find(function(item){return (item != haha && item != number)})
+                },
+                dealZhigua: function(a,b,c,arr2,arr1,arr3,liter){
+                    console.log(a,b,c);
+                    var self = this
+                    //a为上卦， b为下卦， c为动爻
+                    var aname = this.matchobjGName[a-1]
+                    var bname = this.matchobjGName[b-1]
+                    if(liter){this.midgua = ''} //每次查卦均先置空
+                    if(c>0 && c<=3){
+                        var bchangename = self.dealChangeGua(bname,c)
+                        var bnumber = this.matchobjGName.indexOf(bchangename) + 1
+                        return arr2[arr1.indexOf(Number(String(a) + bnumber))] + arr3[c - 1] + '爻动'
+                    }else if( c>3 && c<7){
+                        var achangename = self.dealChangeGua(aname,c-3)
+                        var anumber = this.matchobjGName.indexOf(achangename) + 1
+                        return arr2[arr1.indexOf(Number(String(anumber) + b))] + arr3[c - 1] + '爻动'
+                    }else{
+                        //解中互卦
+                        this.midgua = this.matchObjMid[liter]
+                        return '' //给之卦返回''
+                    }
+                },
+                goToSixTeen: function(a,b,c,arr5,arr1,arr3,liter){
+                    var self = this
+                    var href1 = `https://www.51bsbc.com/#/pages/jiegua/details?name=${arr5[arr1.indexOf(Number(String(a) + b))]}&yao=${arr3[c - 1]}&name2=${this.dealZhigua1(a,b,c,arr5,arr1,arr3)}`
+                    return href1
+                    // console.log(arr5[arr1.indexOf(Number(String(a) + b))]);
+                    // console.log(this.dealZhigua1(a,b,c,arr5,arr1,arr3));
+                    // console.log(arr3[c - 1]);
+                },
+                dealZhigua1: function(a,b,c,arr5,arr1,arr3,liter){
+                    //只需要获取之卦的名称
+
+                    // console.log(a,b,c);
+                    var self = this
+                    //a为上卦， b为下卦， c为动爻
+                    var aname = this.matchobjGName[a-1]
+                    var bname = this.matchobjGName[b-1]
+                    if(liter){this.midgua = ''} //每次查卦均先置空
+                    if(c>0 && c<=3){
+                        var bchangename = self.dealChangeGua(bname,c)
+                        var bnumber = this.matchobjGName.indexOf(bchangename) + 1
+                        return arr5[arr1.indexOf(Number(String(a) + bnumber))]
+                    }else if( c>3 && c<7){
+                        var achangename = self.dealChangeGua(aname,c-3)
+                        var anumber = this.matchobjGName.indexOf(achangename) + 1
+                        return arr5[arr1.indexOf(Number(String(anumber) + b))]
+                    }else{
+                        //解中互卦
+                        this.midgua = this.matchObjMid[liter]
+                        return '' //给之卦返回''
+                    }
+                },
+                toDonate: function(){ this.donateOrshareImg = 'img/donate.png' },
+                toShare: function(){ this.donateOrshareImg = 'img/share.jpg' }
             },
             created: function(){
                 this.sixFourGua = 'https://m.zhouyi.cc/zhouyi/yijing64/'
