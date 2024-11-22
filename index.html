@@ -215,9 +215,25 @@
                     </div>
                 </div> -->
                 <div v-if="changeType === 'author'"  style="margin-top: 15%;">
+                    <!-- 告示 -->
+                    <h1 style="text-align: center;">
+                        <span class="rainbow-text" style="font-size: 2rem;"><strong>告 示</strong></span>
+                    </h1>
+                    <div style="margin: 0 10%;">
+                        <p>各位道友：</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本人想赚点外快补贴家用，如有相关资源渠道恳请推荐一二。</p>
+                        <p>本人会用电脑，会写代码，能写一点文章，会卜卦解决问题等。这里先谢过各位道友了，请通过</p>
+                        <p><em>微信（geM-Taster）</em></p>
+                        <p><em>微博（真皮小队长）</em></p>
+                        <p><em>邮箱（islandsaying@outlook.com）</em></p>
+                        <p>等方式联系我，感激不尽🤝</p>
+                        <p style="display: flex;justify-content: right;align-items: center;">
+                            <span>皮</span>
+                            <img src="img/dog.jpeg" alt="" srcset="" style="display: inline-block;width:10%;" >
+                        </p>
+                    </div>
                     <!-- 二维码 -->
-                    <div style="text-align: center;" >
-                        <!-- <span class="rainbow-text">如果觉得网页好用，希望能扫码一次让我知晓</span>  -->
+                    <!-- <div style="text-align: center;" >
                         <p style="font-size: 12px;margin-bottom: 0.5rem;">
                             <span :class="donateOrshareImg === 'img/donate.png' ? 'rainbow-text' : '' " @click="toDonate">赞赏码</span> 
                             <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span> 
@@ -225,19 +241,6 @@
                         </p>
                         <img :src="donateOrshareImg" alt="" style="border: 1px solid #eee;border-radius:5px">
                     </div>
-                    <!-- <p class="updateInfo"><em>&nbsp;&nbsp;&nbsp;&nbsp;本页面会不断更新，如页面不正常显示可换浏览器打开，欢迎大家提供修改意见，微信和微博私信均可。</em></p>
-                    <p class="updateInfo"><em>&nbsp;&nbsp;&nbsp;&nbsp;2020/7/20日更正数字卦，一数取余为下卦，二数取余为上卦，三数取余为变爻。出处——《易经入门》</em></p>
-                    <p class="updateInfo"><em>&nbsp;&nbsp;&nbsp;&nbsp;2021/1/9日更新国易堂跳转。</em></p>
-                    <p class="updateInfo"><em>&nbsp;&nbsp;&nbsp;&nbsp;2021/2/3日查卦功能，输入卦名和爻动即可生成对应的卦名页面的跳转链接。</em></p>
-                    <p class="updateInfo"><em>&nbsp;&nbsp;&nbsp;&nbsp;2021/2/4日查卦功能，添加国易堂跳转(含无爻动情况)。</em></p>
-                    <p class="updateInfo"><em>&nbsp;&nbsp;&nbsp;&nbsp;2021/2/15日观卦国易堂跳转异常修复。</em></p>
-                    <p class="updateInfo"><em>&nbsp;&nbsp;&nbsp;&nbsp;2021/3/21日升卦查询异常修复。</em></p>
-                    <p class="updateInfo"><em>&nbsp;&nbsp;&nbsp;&nbsp;2021/6/6日可跳转查看六十四卦。</em></p>
-                    <p class="updateInfo"><em>&nbsp;&nbsp;&nbsp;&nbsp;2021/6/13
-                        <span class="rainbow-text">
-                            <a style="text-decoration-line: underline;" href="https://islandsaying.gitee.io/change/indexDev.html">新版界面试运行</a> 
-                        </span>
-                    </em></p> -->
                     <el-row style="margin-top: 0.5rem;text-align: center;margin-top: 1.5rem;">
                         <el-col> 
                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-weixin"></use></svg>
@@ -249,7 +252,7 @@
                             &nbsp;
                             <span>&nbsp;<em>真皮小队长</em>&nbsp;</span>    
                         </el-col>
-                    </el-row>
+                    </el-row> -->
                 </div>
                 <div v-if="changeType === 'time'">
                     <el-row :gutter="20" style="display: flex;justify-content: space-around;">
@@ -327,7 +330,7 @@
             el: "#app",
             data: {
                 sixFourGua: null,
-                changeType: 'time',
+                changeType: 'author',
                 textarea: '',
                 queryInput:'', //输入1
                 queryChange:'', //输入爻
